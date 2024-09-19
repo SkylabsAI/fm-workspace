@@ -1,0 +1,82 @@
+# Warns about entries in this _CoqProject
+-arg -w -arg -cannot-open-path
+# Warnings from `dune`
+-arg -w -arg -notation-overridden
+-arg -w -arg -custom-entry-overridden
+-arg -w -arg -redundant-canonical-projection
+-arg -w -arg -ambiguous-paths
+# Turn warning on hints into error:
+-arg -w -arg +deprecated-hint-without-locality
+-arg -w -arg +deprecated-instance-without-locality
+-arg -w -arg +deprecated-tacopt-without-locality
+-arg -w -arg +future-coercion-class-field
+-arg -w -arg +unknown-option
+
+# Plugin directory.
+-I _build/install/default/lib
+
+# Specified logical paths for directories (for .v and .vo files).
+-Q fmdeps/coq-ext-lib/theories/ ExtLib
+-Q _build/default/fmdeps/coq-ext-lib/theories/ ExtLib
+-Q fmdeps/coq-equations/theories/ Equations
+-Q _build/default/fmdeps/coq-equations/theories/ Equations
+-Q fmdeps/coq-elpi/theories/ elpi
+-Q _build/default/fmdeps/coq-elpi/theories/ elpi
+-Q fmdeps/coq-elpi/elpi/ elpi_elpi
+-Q _build/default/fmdeps/coq-elpi/elpi/ elpi_elpi
+-Q fmdeps/coq-elpi/apps/NES/theories elpi.apps.NES
+-Q _build/default/fmdeps/coq-elpi/apps/NES/theories elpi.apps.NES
+-Q fmdeps/coq-elpi/apps/NES/elpi elpi.apps.NES.elpi
+-Q _build/default/fmdeps/coq-elpi/apps/NES/elpi elpi.apps.NES.elpi
+-Q fmdeps/coq-elpi/apps/derive/theories elpi.apps.derive
+-Q _build/default/fmdeps/coq-elpi/apps/derive/theories elpi.apps.derive
+-Q fmdeps/coq-elpi/apps/derive/elpi elpi.apps.derive.elpi
+-Q _build/default/fmdeps/coq-elpi/apps/derive/elpi elpi.apps.derive.elpi
+-Q fmdeps/coq-elpi/apps/locker/theories elpi.apps.locker
+-Q _build/default/fmdeps/coq-elpi/apps/locker/theories elpi.apps.locker
+-Q fmdeps/coq-elpi/apps/locker/elpi elpi.apps.locker.elpi
+-Q _build/default/fmdeps/coq-elpi/apps/locker/elpi elpi.apps.locker.elpi
+-Q fmdeps/stdpp/stdpp/ stdpp
+-Q _build/default/fmdeps/stdpp/stdpp/ stdpp
+-Q fmdeps/stdpp/stdpp_bitvector/ stdpp.bitvector
+-Q _build/default/fmdeps/stdpp/stdpp_bitvector/ stdpp.bitvector
+-Q fmdeps/stdpp/stdpp_unstable/ stdpp.unstable
+-Q _build/default/fmdeps/stdpp/stdpp_unstable/ stdpp.unstable
+-Q fmdeps/iris/iris/ iris
+-Q _build/default/fmdeps/iris/iris/ iris
+-Q fmdeps/iris/iris_heap_lang/ iris.heap_lang
+-Q _build/default/fmdeps/iris/iris_heap_lang/ iris.heap_lang
+-Q fmdeps/iris/iris_unstable/ iris.unstable
+-Q _build/default/fmdeps/iris/iris_unstable/ iris.unstable
+-Q fmdeps/iris/iris_deprecated/ iris.deprecated
+-Q _build/default/fmdeps/iris/iris_deprecated/ iris.deprecated
+-Q fmdeps/cpp2v-core/theories/prelude/ bedrock.prelude
+-Q _build/default/fmdeps/cpp2v-core/theories/prelude/ bedrock.prelude
+-Q fmdeps/cpp2v-core/theories/lang/ bedrock.lang
+-Q _build/default/fmdeps/cpp2v-core/theories/lang/ bedrock.lang
+-Q fmdeps/cpp2v-core/coq-lens/Lens/ Lens
+-Q _build/default/fmdeps/cpp2v-core/coq-lens/Lens/ Lens
+-Q fmdeps/cpp2v-core/coq-upoly/upoly/ bedrock.upoly
+-Q _build/default/fmdeps/cpp2v-core/coq-upoly/upoly/ bedrock.upoly
+-Q fmdeps/cpp2v-core/tests/ bedrocktest
+-Q _build/default/fmdeps/cpp2v-core/tests/ bedrocktest
+-Q fmdeps/cpp2v/theories/ bedrock
+-Q _build/default/fmdeps/cpp2v/theories/ bedrock
+-Q fmdeps/cpp2v/tests/ bedrock_auto.tests
+-Q _build/default/fmdeps/cpp2v/tests/ bedrock_auto.tests
+-Q fmdeps/cpp2v/ltac2-extra/theories/ bedrock.ltac2.extra
+-Q _build/default/fmdeps/cpp2v/ltac2-extra/theories/ bedrock.ltac2.extra
+-Q fmdeps/cpp2v/ltac2-extra/tests/ bedrock_tests.ltac2.extra
+-Q _build/default/fmdeps/cpp2v/ltac2-extra/tests/ bedrock_tests.ltac2.extra
+-Q fmdeps/cpp2v/ltac2-logger/theories/ bedrock.ltac2.logger
+-Q _build/default/fmdeps/cpp2v/ltac2-logger/theories/ bedrock.ltac2.logger
+-Q fmdeps/cpp2v/coq-bedrock-auto-core/theories/ bedrock.auto.core
+-Q _build/default/fmdeps/cpp2v/coq-bedrock-auto-core/theories/ bedrock.auto.core
+-Q fmdeps/cpp2v/coq-bedrock-auto-core/examples/ bedrock_auto_core.examples
+-Q _build/default/fmdeps/cpp2v/coq-bedrock-auto-core/examples/ bedrock_auto_core.examples
+-Q fmdeps/cpp2v/coq-bedrock-auto-core/tests/ bedrock_auto_core.tests
+-Q _build/default/fmdeps/cpp2v/coq-bedrock-auto-core/tests/ bedrock_auto_core.tests
+-Q fmdeps/cpp2v/elpi-extra/extra/ bedrock.elpi.extra
+-Q _build/default/fmdeps/cpp2v/elpi-extra/extra/ bedrock.elpi.extra
+-Q fmdeps/cpp2v/elpi-cpp/cpp/ bedrock.elpi.cpp
+-Q _build/default/fmdeps/cpp2v/elpi-cpp/cpp/ bedrock.elpi.cpp
