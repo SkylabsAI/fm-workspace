@@ -63,7 +63,6 @@ SWITCH_CREATED=false
 OPAM_SWITCH_NAME="bedrock-${FMDEPS_VERSION}"
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
   echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
-  SWITCH_CREATED=true
 else
   # Adding the opam repositories (this is idempotent).
   for opam_repo in ${OPAM_REPOS[@]}; do
