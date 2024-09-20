@@ -18,5 +18,6 @@ This will do the following:
 After installation, you can compile all the FM dependencies by running the
 following command:
 ```sh
+make -C fmdeps/cpp2v ast-prepare
 dune build
 ```

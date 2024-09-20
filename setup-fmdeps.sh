@@ -59,9 +59,11 @@ if [[ "${MIN_OPAM_VERSION}" != \
   echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
 fi
 
+SWITCH_CREATED=false
 OPAM_SWITCH_NAME="bedrock-${FMDEPS_VERSION}"
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
   echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
+  SWITCH_CREATED=true
 else
   # Adding the opam repositories (this is idempotent).
   for opam_repo in ${OPAM_REPOS[@]}; do
@@ -78,6 +80,7 @@ else
   opam update
   opam pin add -n -k version bedrockdeps "${FMDEPS_VERSION}"
   opam install -y bedrockdeps
+  SWITCH_CREATED=true
 fi
 
 # Creating the directory where repos will be cloned.
@@ -149,8 +152,11 @@ if ! type clang 2> /dev/null > /dev/null; then
   exit 1
 fi
 
-CLANG_VER="$(clang --version | grep "clang version" | cut -d' ' -f 3)"
-CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f 1)"
+CLANG_VER="$(clang --version | \
+               grep "clang version" | \
+               sed 's/^.*clang version \([0-9.]\+\).*$/\1/' | \
+               cut -d' ' -f3)"
+CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f1)"
 
 MIN_MAJOR_VER="16"
 MAX_MAJOR_VER="18"
@@ -162,4 +168,13 @@ else
   echo -e "The major version is expected to be between ${MIN_MAJOR_VER} and \
     ${MAX_MAJOR_VER}.\033[0m"
   exit 1
+fi
+
+# Remind to configure opam.
+
+if [[ ${SWITCH_CREATED} = "true" ]]; then
+  echo
+  echo -e "\033[0;36mNew opam switch created, you may need to run:\033[0m"
+  echo -e \
+    "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\")\033[0m"
 fi
