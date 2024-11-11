@@ -18,23 +18,24 @@ FMDEPS_DIR="${PWD}/fmdeps"
 MIN_OPAM_VERSION="2.2.1"
 
 # Version of the FM dependencies.
-FMDEPS_VERSION="2024-09-16"
+FMDEPS_VERSION="2024-11-01"
 
 # Configured opam repositories. Convention: "<NAME>!<URL>".
 OPAM_REPOS=(
   "coq-released!https://coq.inria.fr/opam/released"
-  "bedrock!git+ssh://git@gitlab.com/bedrocksystems/formal-methods/opam.git"
   "iris-dev!git+https://gitlab.mpi-sws.org/iris/opam.git"
 )
 
 # Selected opam repositories at switch creation.
-OPAM_SELECTED_REPOS="bedrock,iris-dev,default,coq-released"
+OPAM_SELECTED_REPOS="iris-dev,default,coq-released"
 
 # Repositories to clone. Convention: "<REPO_PATH>:<MAIN_BRANCH>".
 FM_REPOS=(
   "cpp2v-core:master"
   "cpp2v:master"
-  "fm-ci-tools:main"
+  "formal-methods/fm-ci-tools:main"
+  "formal-methods/fm-ci:main"
+  "formal-methods/coq:br-master"
   "formal-methods/stdpp:br-master"
   "formal-methods/iris:br-master"
   "formal-methods/coq-ext-lib:br-master"
@@ -42,45 +43,8 @@ FM_REPOS=(
   "formal-methods/elpi:br-master"
   "formal-methods/coq-elpi:br-master"
   "formal-methods/coq-serapi:br-main"
+  "formal-methods/coq-lsp:br-main"
 )
-
-# Checking that opam is installed.
-if ! type opam 2> /dev/null > /dev/null; then
-  echo "Could not find opam, see https://opam.ocaml.org/doc/Install.html."
-  exit 1
-fi
-
-# Check opam version.
-OPAM_VERSION=$(opam --version)
-if [[ "${MIN_OPAM_VERSION}" != \
-      "$(echo -e '${OPAM_VERSION}\n2.2.1' | sort -V | head -n1)" ]]; then
-  echo "Your version of opam (${OPAM_VERSION}) is too old."
-  echo "Version ${MIN_OPAM_VERSION} at least is required."
-  echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
-fi
-
-SWITCH_CREATED=false
-OPAM_SWITCH_NAME="bedrock-${FMDEPS_VERSION}"
-if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
-  echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
-else
-  # Adding the opam repositories (this is idempotent).
-  for opam_repo in ${OPAM_REPOS[@]}; do
-    opam_repo_name=$(echo ${opam_repo} | cut -d'!' -f1)
-    opam_repo_url=$(echo ${opam_repo} | cut -d'!' -f2)
-    opam repo add --dont-select "${opam_repo_name}" "${opam_repo_url}"
-  done
-
-  # Creating the new switch.
-  echo "Creating opam switch ${OPAM_SWITCH_NAME}."
-  opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
-    "${OPAM_SWITCH_NAME}"
-  eval $(opam env --switch="${OPAM_SWITCH_NAME}")
-  opam update
-  opam pin add -n -k version bedrockdeps "${FMDEPS_VERSION}"
-  opam install -y bedrockdeps
-  SWITCH_CREATED=true
-fi
 
 # Creating the directory where repos will be cloned.
 if [[ ! -d "${FMDEPS_DIR}" ]]; then
@@ -105,6 +69,43 @@ for repo in ${FM_REPOS[@]}; do
     echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
   fi
 done
+
+# Checking that opam is installed.
+if ! type opam 2> /dev/null > /dev/null; then
+  echo "Could not find opam, see https://opam.ocaml.org/doc/Install.html."
+  exit 1
+fi
+
+# Check opam version.
+OPAM_VERSION=$(opam --version)
+if [[ "${MIN_OPAM_VERSION}" != \
+      "$(echo -e '${OPAM_VERSION}\n2.2.1' | sort -V | head -n1)" ]]; then
+  echo "Your version of opam (${OPAM_VERSION}) is too old."
+  echo "Version ${MIN_OPAM_VERSION} at least is required."
+  echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
+fi
+
+SWITCH_CREATED=false
+OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
+if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
+  echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
+else
+  # Adding the opam repositories (this is idempotent).
+  for opam_repo in ${OPAM_REPOS[@]}; do
+    opam_repo_name=$(echo ${opam_repo} | cut -d'!' -f1)
+    opam_repo_url=$(echo ${opam_repo} | cut -d'!' -f2)
+    opam repo add --dont-select "${opam_repo_name}" "${opam_repo_url}"
+  done
+
+  # Creating the new switch.
+  echo "Creating opam switch ${OPAM_SWITCH_NAME}."
+  opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
+    "${OPAM_SWITCH_NAME}"
+  eval $(opam env --switch="${OPAM_SWITCH_NAME}")
+  opam update
+  opam install ${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+  SWITCH_CREATED=true
+fi
 
 # Check SWI-Prolog version.
 

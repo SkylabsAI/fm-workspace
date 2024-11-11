@@ -16,26 +16,24 @@
 -I _build/install/default/lib
 
 # Specified logical paths for directories (for .v and .vo files).
+-Q fmdeps/coq/user-contrib/Ltac2 Ltac2
+-Q _build/default/fmdeps/coq/user-contrib/Ltac2 Ltac2
 -Q fmdeps/coq-ext-lib/theories/ ExtLib
 -Q _build/default/fmdeps/coq-ext-lib/theories/ ExtLib
 -Q fmdeps/coq-equations/theories/ Equations
 -Q _build/default/fmdeps/coq-equations/theories/ Equations
 -Q fmdeps/coq-elpi/theories/ elpi
 -Q _build/default/fmdeps/coq-elpi/theories/ elpi
--Q fmdeps/coq-elpi/elpi/ elpi_elpi
 -Q _build/default/fmdeps/coq-elpi/elpi/ elpi_elpi
--Q fmdeps/coq-elpi/apps/NES/theories elpi.apps.NES
--Q _build/default/fmdeps/coq-elpi/apps/NES/theories elpi.apps.NES
--Q fmdeps/coq-elpi/apps/NES/elpi elpi.apps.NES.elpi
--Q _build/default/fmdeps/coq-elpi/apps/NES/elpi elpi.apps.NES.elpi
--Q fmdeps/coq-elpi/apps/derive/theories elpi.apps.derive
--Q _build/default/fmdeps/coq-elpi/apps/derive/theories elpi.apps.derive
--Q fmdeps/coq-elpi/apps/derive/elpi elpi.apps.derive.elpi
--Q _build/default/fmdeps/coq-elpi/apps/derive/elpi elpi.apps.derive.elpi
--Q fmdeps/coq-elpi/apps/locker/theories elpi.apps.locker
--Q _build/default/fmdeps/coq-elpi/apps/locker/theories elpi.apps.locker
--Q fmdeps/coq-elpi/apps/locker/elpi elpi.apps.locker.elpi
--Q _build/default/fmdeps/coq-elpi/apps/locker/elpi elpi.apps.locker.elpi
+-Q fmdeps/coq-elpi/apps/NES/theories/ elpi.apps.NES
+-Q _build/default/fmdeps/coq-elpi/apps/NES/theories/ elpi.apps.NES
+-Q _build/default/fmdeps/coq-elpi/apps/NES/elpi/ elpi.apps.NES.elpi
+-Q fmdeps/coq-elpi/apps/derive/theories/ elpi.apps.derive
+-Q _build/default/fmdeps/coq-elpi/apps/derive/theories/ elpi.apps.derive
+-Q _build/default/fmdeps/coq-elpi/apps/derive/elpi/ elpi.apps.derive.elpi
+-Q fmdeps/coq-elpi/apps/locker/theories/ elpi.apps.locker
+-Q _build/default/fmdeps/coq-elpi/apps/locker/theories/ elpi.apps.locker
+-Q _build/default/fmdeps/coq-elpi/apps/locker/elpi/ elpi.apps.locker.elpi
 -Q fmdeps/stdpp/stdpp/ stdpp
 -Q _build/default/fmdeps/stdpp/stdpp/ stdpp
 -Q fmdeps/stdpp/stdpp_bitvector/ stdpp.bitvector
@@ -80,3 +78,5 @@
 -Q _build/default/fmdeps/cpp2v/elpi-extra/extra/ bedrock.elpi.extra
 -Q fmdeps/cpp2v/elpi-cpp/cpp/ bedrock.elpi.cpp
 -Q _build/default/fmdeps/cpp2v/elpi-cpp/cpp/ bedrock.elpi.cpp
+-Q fmdeps/cpp2v/elpi-cpp/tests/ bedrock_tests.elpi.cpp
+-Q _build/default/fmdeps/cpp2v/elpi-cpp/tests/ bedrock_tests.elpi.cpp
