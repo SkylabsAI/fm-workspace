@@ -42,7 +42,7 @@ FM_REPOS=(
   "formal-methods/coq-equations:br-main"
   "formal-methods/elpi:br-master"
   "formal-methods/coq-elpi:br-master"
-  "formal-methods/coq-serapi:br-main"
+  "formal-methods/vscoq:br-main"
   "formal-methods/coq-lsp:br-main"
 )
 
