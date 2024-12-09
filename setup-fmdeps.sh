@@ -33,7 +33,6 @@ OPAM_SELECTED_REPOS="iris-dev,default,coq-released"
 FM_REPOS=(
   "cpp2v-core:master"
   "cpp2v:master"
-  "formal-methods/fm-ci-tools:main"
   "formal-methods/fm-ci:main"
   "formal-methods/coq:br-master"
   "formal-methods/stdpp:br-master"
@@ -42,7 +41,7 @@ FM_REPOS=(
   "formal-methods/coq-equations:br-main"
   "formal-methods/elpi:br-master"
   "formal-methods/coq-elpi:br-master"
-  "formal-methods/coq-serapi:br-main"
+  "formal-methods/vscoq:br-main"
   "formal-methods/coq-lsp:br-main"
 )
 
