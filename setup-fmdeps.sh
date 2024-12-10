@@ -131,7 +131,7 @@ CUR_VER=$(pkg-config --modversion swipl)
 PL_CUR_VER=$(version_to_int ${CUR_VER})
 
 MIN_VER="9.0.0"
-MAX_VER="9.1.8"
+MAX_VER="9.3.8"
 
 PL_MIN_VER=$(version_to_int ${MIN_VER})
 PL_MAX_VER=$(version_to_int ${MAX_VER})
