@@ -29,6 +29,8 @@ if [ "$do_help" = "1" ]; then
     echo "Options"
     echo " -p     only install public dependencies"
     echo " -h     show this message"
+    echo " -s     pull dependencies using ssh"
+    exit
 fi
 
 
@@ -95,7 +97,7 @@ for repo in ${PUBLIC_REPOS[@]}; do
     repo_name=$(basename ${repo_path})
     repo_branch=$(echo ${repo} | cut -d':' -f2)
     repo_url="${protocol}${PUBLIC_REPO}/${repo_path}"
-    repo_dir="${FMDEPS_DIR}/${repo_name}"
+    repo_dir="${FMDEPS_DIR}/${repo_target}"
 
     if [[ ! -d "${repo_dir}" ]]; then
         echo "Cloning ${repo_url}#${repo_branch} to [${repo_dir}]."
