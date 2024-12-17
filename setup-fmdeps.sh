@@ -124,10 +124,12 @@ if [[ "$public_only" = "0" ]]; then
         repo_name=$(basename ${repo_path})
         repo_branch=$(echo ${repo} | cut -d':' -f2)
         repo_url="${protocol}${PRIVATE_REPO}/${repo_path}"
-        repo_dir="${FMDEPS_DIR}/${repo_name}"
+        repo_dir="${FMDEPS_DIR}/${repo_target}"
 
         if [[ ! -d "${repo_dir}" ]]; then
             echo "Cloning ${repo_url}#${repo_branch} to [${repo_dir}]."
+            echo "git clone --branch ${repo_branch} ${repo_url} \"${repo_dir}\""
+
             git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
         else
             echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
