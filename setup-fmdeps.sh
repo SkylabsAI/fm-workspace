@@ -219,8 +219,8 @@ if seq ${CLANG_MIN_MAJOR_VER} ${CLANG_MAX_MAJOR_VER} | grep -q "${CLANG_MAJOR_VE
   echo "Using clang version ${CLANG_VER}."
 else
   echo -e "\033[0;31mError: clang version ${CLANG_VER} is not supported."
-  echo -e "The major version is expected to be between ${MIN_MAJOR_VER} and \
-    ${MAX_MAJOR_VER}.\033[0m"
+  echo -e "The major version is expected to be between ${CLANG_MIN_MAJOR_VER} and \
+    ${CLANG_MAX_MAJOR_VER}.\033[0m"
   exit 1
 fi
 
