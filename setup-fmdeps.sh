@@ -211,7 +211,7 @@ fi
 
 CLANG_VER="$(clang --version | \
                grep "clang version" | \
-               sed 's/^.*clang version \([0-9.]\+\).*$/\1/' | \
+               sed -r 's/^.*clang version ([0-9.]+).*$/\1/' | \
                cut -d' ' -f3)"
 CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f1)"
 
