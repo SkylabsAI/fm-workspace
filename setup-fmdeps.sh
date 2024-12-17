@@ -11,7 +11,6 @@ set -euf -o pipefail
 public_only=0
 do_help=0
 protocol="https://"
-domain_separator="/"
 
 while getopts "phs" opt
 do
@@ -35,8 +34,8 @@ fi
 
 
 # Git base URL.
-PRIVATE_REPO="gitlab.com${domain_separator}bedrocksystems"
-PUBLIC_REPO="github.com${domain_separator}bluerock-io"
+PRIVATE_REPO="gitlab.com/bedrocksystems"
+PUBLIC_REPO="github.com/bluerock-io"
 
 # Directory where to clone the FM dependencies.
 FMDEPS_DIR="${PWD}/fmdeps"
