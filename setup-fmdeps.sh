@@ -82,20 +82,22 @@ else
   echo "Directory [${FMDEPS_DIR}] already exists."
 fi
 
-# Cloning the configured repositories.
-for repo in ${PUBLIC_REPOS[@]}; do
+pull() {
+    local repo="$1"
+    local REPO_BASE="$2"
     if [[ $repo == *">"* ]]; then
-	      repo_path=$(echo ${repo} | cut -d':' -f1)
-	      repo_target=$(echo ${repo_path} | cut -d'>' -f2)
-	      repo_path=$(echo ${repo_path} | cut -d'>' -f1)
+	  repo_path=$(echo ${repo} | cut -d':' -f1)
+	  repo_target=$(echo ${repo_path} | cut -d'>' -f2)
+	  repo_path=$(echo ${repo_path} | cut -d'>' -f1)
     else
-	      repo_path=$(echo ${repo} | cut -d':' -f1)
-	      repo_target=$repo_path
+	  repo_path=$(echo ${repo} | cut -d':' -f1)
+	  repo_target=$repo_path
     fi
+
 
     repo_name=$(basename ${repo_path})
     repo_branch=$(echo ${repo} | cut -d':' -f2)
-    repo_url="${protocol}${PUBLIC_REPO}/${repo_path}"
+    repo_url="${protocol}${REPO_BASE}/${repo_path}"
     repo_dir="${FMDEPS_DIR}/${repo_target}"
 
     if [[ ! -d "${repo_dir}" ]]; then
@@ -107,34 +109,17 @@ for repo in ${PUBLIC_REPOS[@]}; do
         echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
         (cd "${repo_dir}"; git fetch; git checkout ${repo_branch}; git pull)
     fi
+}
+
+# Cloning the configured repositories.
+for repo in ${PUBLIC_REPOS[@]}; do
+    pull "$repo" "${PUBLIC_REPO}"
 done
 
 if [[ "$public_only" = "0" ]]; then
     # Cloning the private repositories
     for repo in ${PRIVATE_REPOS[@]}; do
-        if [[ $repo == *">"* ]]; then
-	          repo_path=$(echo ${repo} | cut -d':' -f1)
-	          repo_target=$(echo ${repo_path} | cut -d'>' -f2)
-	          repo_path=$(echo ${repo_path} | cut -d'>' -f1)
-        else
-	          repo_path=$(echo ${repo} | cut -d':' -f1)
-	          repo_target=$repo_path
-        fi
-
-        repo_name=$(basename ${repo_path})
-        repo_branch=$(echo ${repo} | cut -d':' -f2)
-        repo_url="${protocol}${PRIVATE_REPO}/${repo_path}"
-        repo_dir="${FMDEPS_DIR}/${repo_target}"
-
-        if [[ ! -d "${repo_dir}" ]]; then
-            echo "Cloning ${repo_url}#${repo_branch} to [${repo_dir}]."
-            echo "git clone --branch ${repo_branch} ${repo_url} \"${repo_dir}\""
-
-            git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
-        else
-            echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
-            (cd "${repo_dir}"; git fetch; git checkout ${repo_branch}; git pull)
-        fi
+	pull "$repo" "${PRIVATE_REPO}"
     done
 fi
 
