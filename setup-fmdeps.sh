@@ -8,8 +8,34 @@
 
 set -euf -o pipefail
 
+public_only=0
+do_help=0
+protocol="https://"
+
+while getopts "phs" opt
+do
+  case $opt in
+  (p) public_only=1 ;;
+  (h) do_help=1;;
+  (s) protocol="ssh://git@";;
+  (*) printf "Illegal option '-%s'\n" "$opt" && exit 1 ;;
+  esac
+done
+
+if [ "$do_help" = "1" ]; then
+    echo "Setup the BlueRock FM Workspace"
+    echo ""
+    echo "Options"
+    echo " -p     only install public dependencies"
+    echo " -h     show this message"
+    echo " -s     pull dependencies using ssh"
+    exit
+fi
+
+
 # Git base URL.
-GITLAB_BLUEROCK="git@gitlab.com:bedrocksystems"
+PRIVATE_REPO="gitlab.com/bedrocksystems"
+PUBLIC_REPO="github.com/bluerock-io"
 
 # Directory where to clone the FM dependencies.
 FMDEPS_DIR="${PWD}/fmdeps"
@@ -29,20 +55,23 @@ OPAM_REPOS=(
 # Selected opam repositories at switch creation.
 OPAM_SELECTED_REPOS="iris-dev,default,coq-released"
 
-# Repositories to clone. Convention: "<REPO_PATH>:<MAIN_BRANCH>".
-FM_REPOS=(
-  "cpp2v-core:master"
+# Repositories to clone. Convention: "<REPO_PATH>[><PATH>]:<MAIN_BRANCH>".
+PUBLIC_REPOS=(
+  "BRiCk>cpp2v-core:master"
+  "coq:br-master"
+  "stdpp:br-master"
+  "iris:br-master"
+  "coq-ext-lib:br-master"
+  "coq-equations:br-main"
+  "elpi:br-master"
+  "coq-elpi:br-master"
+  "vscoq:br-main"
+  "coq-lsp:br-main"
+)
+
+# Repositories that are internal
+PRIVATE_REPOS=(
   "cpp2v:master"
-  "formal-methods/fm-ci:main"
-  "formal-methods/coq:br-master"
-  "formal-methods/stdpp:br-master"
-  "formal-methods/iris:br-master"
-  "formal-methods/coq-ext-lib:br-master"
-  "formal-methods/coq-equations:br-main"
-  "formal-methods/elpi:br-master"
-  "formal-methods/coq-elpi:br-master"
-  "formal-methods/vscoq:br-main"
-  "formal-methods/coq-lsp:br-main"
 )
 
 # Creating the directory where repos will be cloned.
@@ -53,21 +82,46 @@ else
   echo "Directory [${FMDEPS_DIR}] already exists."
 fi
 
-# Cloning the configured repositories.
-for repo in ${FM_REPOS[@]}; do
-  repo_path=$(echo ${repo} | cut -d':' -f1)
-  repo_name=$(basename ${repo_path})
-  repo_branch=$(echo ${repo} | cut -d':' -f2)
-  repo_url="${GITLAB_BLUEROCK}/${repo_path}"
-  repo_dir="${FMDEPS_DIR}/${repo_name}"
+pull() {
+    local repo="$1"
+    local REPO_BASE="$2"
+    if [[ $repo == *">"* ]]; then
+	  repo_path=$(echo ${repo} | cut -d':' -f1)
+	  repo_target=$(echo ${repo_path} | cut -d'>' -f2)
+	  repo_path=$(echo ${repo_path} | cut -d'>' -f1)
+    else
+	  repo_path=$(echo ${repo} | cut -d':' -f1)
+	  repo_target=$repo_path
+    fi
 
-  if [[ ! -d "${repo_dir}" ]]; then
-    echo "Cloning ${repo_url}#${repo_branch} to [${repo_dir}]."
-    git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
-  else
-    echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
-  fi
+
+    repo_name=$(basename ${repo_path})
+    repo_branch=$(echo ${repo} | cut -d':' -f2)
+    repo_url="${protocol}${REPO_BASE}/${repo_path}"
+    repo_dir="${FMDEPS_DIR}/${repo_target}"
+
+    if [[ ! -d "${repo_dir}" ]]; then
+        echo "Cloning ${repo_url}#${repo_branch} to [${repo_dir}]."
+        echo "git clone --branch ${repo_branch} ${repo_url} \"${repo_dir}\""
+
+        git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
+    else
+        echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
+        (cd "${repo_dir}"; git fetch; git checkout ${repo_branch}; git pull)
+    fi
+}
+
+# Cloning the configured repositories.
+for repo in ${PUBLIC_REPOS[@]}; do
+    pull "$repo" "${PUBLIC_REPO}"
 done
+
+if [[ "$public_only" = "0" ]]; then
+    # Cloning the private repositories
+    for repo in ${PRIVATE_REPOS[@]}; do
+	pull "$repo" "${PRIVATE_REPO}"
+    done
+fi
 
 # Checking that opam is installed.
 if ! type opam 2> /dev/null > /dev/null; then
@@ -145,27 +199,28 @@ else
 fi
 
 # Check LLVM version.
+CLANG_MIN_MAJOR_VER="16"
+CLANG_MAX_MAJOR_VER="18"
+CLANG_RECOMMENDED_VER="18"
 
 if ! type clang 2> /dev/null > /dev/null; then
   echo "Could not find clang."
+  echo "See https://apt.llvm.org/. We recommend version ${CLANG_RECOMMENDED_VER}."
   exit 1
 fi
 
 CLANG_VER="$(clang --version | \
                grep "clang version" | \
-               sed 's/^.*clang version \([0-9.]\+\).*$/\1/' | \
+               sed -r 's/^.*clang version ([0-9.]+).*$/\1/' | \
                cut -d' ' -f3)"
 CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f1)"
 
-MIN_MAJOR_VER="16"
-MAX_MAJOR_VER="18"
-
-if seq ${MIN_MAJOR_VER} ${MAX_MAJOR_VER} | grep -q "${CLANG_MAJOR_VER}"; then
+if seq ${CLANG_MIN_MAJOR_VER} ${CLANG_MAX_MAJOR_VER} | grep -q "${CLANG_MAJOR_VER}"; then
   echo "Using clang version ${CLANG_VER}."
 else
   echo -e "\033[0;31mError: clang version ${CLANG_VER} is not supported."
-  echo -e "The major version is expected to be between ${MIN_MAJOR_VER} and \
-    ${MAX_MAJOR_VER}.\033[0m"
+  echo -e "The major version is expected to be between ${CLANG_MIN_MAJOR_VER} and \
+    ${CLANG_MAX_MAJOR_VER}.\033[0m"
   exit 1
 fi
 
