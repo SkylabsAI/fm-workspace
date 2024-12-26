@@ -138,7 +138,6 @@ if [[ "${MIN_OPAM_VERSION}" != \
   echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
 fi
 
-SWITCH_CREATED=false
 OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
   echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
@@ -157,7 +156,6 @@ else
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
   opam install ${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
-  SWITCH_CREATED=true
 fi
 
 # Check SWI-Prolog version.
@@ -226,9 +224,9 @@ fi
 
 # Remind to configure opam.
 
-if [[ ${SWITCH_CREATED} = "true" ]]; then
+if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
   echo
-  echo -e "\033[0;36mNew opam switch created, you may need to run:\033[0m"
+  echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run:\033[0m"
   echo -e \
     "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\")\033[0m"
 fi
