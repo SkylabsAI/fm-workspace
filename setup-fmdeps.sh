@@ -155,7 +155,7 @@ else
     "${OPAM_SWITCH_NAME}"
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
-  opam install ${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+  opam install ${FMDEPS_DIR}/br-fm-deps.opam
 fi
 
 # Check SWI-Prolog version.
