@@ -34,7 +34,7 @@ fi
 
 
 # Git base URL.
-PRIVATE_REPO="gitlab.com/bedrocksystems"
+PRIVATE_REPO="github.com/bluerock-io"
 PUBLIC_REPO="github.com/bluerock-io"
 
 # Directory where to clone the FM dependencies.
@@ -71,7 +71,7 @@ PUBLIC_REPOS=(
 
 # Repositories that are internal
 PRIVATE_REPOS=(
-  "cpp2v:master"
+  "auto>cpp2v:master"
 )
 
 # Creating the directory where repos will be cloned.
