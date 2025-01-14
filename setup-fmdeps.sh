@@ -162,7 +162,7 @@ fi
 
 if ! pkg-config --modversion swipl > /dev/null; then
   echo "It seems that SWI-Prolog is not installed on your system."
-  echo "Command [pkg-config --modversion swipl] filed."
+  echo "Command [pkg-config --modversion swipl] failed."
   exit 1
 fi
 
