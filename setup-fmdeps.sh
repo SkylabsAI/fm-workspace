@@ -153,6 +153,7 @@ else
   echo "Creating opam switch ${OPAM_SWITCH_NAME}."
   opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
     "${OPAM_SWITCH_NAME}"
+  # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
   opam install ${FMDEPS_DIR}/br-fm-deps.opam
@@ -228,5 +229,5 @@ if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
   echo
   echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run:\033[0m"
   echo -e \
-    "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\")\033[0m"
+    "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\" --set-switch)\033[0m"
 fi
