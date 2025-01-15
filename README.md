@@ -37,7 +37,7 @@ dune build _build/default/fmdeps/coq/dev/shim/coqidetop.opt
 
 You additionally need to run emacs with `emacs -l dev/fmdev.el`.
 
-### VSCoq
+### VSCoq Legacy
 
-Go to "Settings", then "coqtop bin path”, and use the following path:
+Go to "Settings -> Workspace -> coqtop bin path” and use the following path:
 ```/path/to/fm-workspace/_build/default/fmdeps/coq/dev/shim```
