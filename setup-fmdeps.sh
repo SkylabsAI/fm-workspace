@@ -66,6 +66,7 @@ PUBLIC_REPOS=(
   "elpi:br-master"
   "coq-elpi:br-master"
   "vscoq:br-main"
+  "fm-ci:main"
   "coq-lsp:br-main"
 )
 
