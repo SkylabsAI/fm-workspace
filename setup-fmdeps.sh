@@ -108,7 +108,11 @@ pull() {
         git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
     else
         echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
-        (cd "${repo_dir}"; git fetch; git checkout ${repo_branch}; git pull)
+        cd "${repo_dir}"
+        git fetch
+        git checkout ${repo_branch}
+        git pull
+        cd -
     fi
 }
 
