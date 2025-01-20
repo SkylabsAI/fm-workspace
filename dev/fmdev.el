@@ -7,7 +7,7 @@
 (require 'subr-x)
 
 (defun workspace-directory ()
-  "Return the BHV  `default-directory'."
+  "Return the `default-directory' of our Dune/Coq workspace."
   (let ((dir (seq-some
               (lambda (f) (locate-dominating-file default-directory f))
               '("dune-workspace" "fmdeps"))))
@@ -17,7 +17,7 @@
 (defvar coq-prog-name)
 
 ;; Lets us detect whether there are file local variables
-;; even though PG sets it with `setq' when there's a _Coqproject.
+;; even though PG sets it with `setq' when there's a _CoqProject.
 ;; Also makes sense generally, so might make it into PG someday.
 (make-variable-buffer-local 'coq-prog-args)
 (setq-default coq-prog-args nil)
@@ -25,7 +25,7 @@
 (defun coqdev-setup-proofgeneral ()
   "Setup Proofgeneral variables for Coq development.
 
-Note that this function is executed before _Coqproject is read if it exists."
+Note that this function is executed before _CoqProject is read if it exists."
   (let ((dir (workspace-directory)))
     (when dir
      (setq-local coq-prog-name
