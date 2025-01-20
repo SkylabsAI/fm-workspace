@@ -66,6 +66,7 @@ PUBLIC_REPOS=(
   "elpi:br-master"
   "coq-elpi:br-master"
   "vscoq:br-main"
+  "fm-ci:main"
   "coq-lsp:br-main"
 )
 
@@ -106,8 +107,13 @@ pull() {
 
         git clone --branch ${repo_branch} ${repo_url} "${repo_dir}"
     else
-        echo "Directory [${repo_dir}] already exists, skipping repo ${repo_path}."
-        (cd "${repo_dir}"; git fetch; git checkout ${repo_branch}; git pull)
+        echo "Directory [${repo_dir}] already exists, updating repo ${repo_path} instead of recloning."
+        cd "${repo_dir}"
+        git remote set-url origin ${repo_url}
+        git fetch
+        git checkout ${repo_branch}
+        git pull
+        cd -
     fi
 }
 
