@@ -87,12 +87,12 @@ pull() {
     local repo="$1"
     local REPO_BASE="$2"
     if [[ $repo == *">"* ]]; then
-	  repo_path=$(echo ${repo} | cut -d':' -f1)
-	  repo_target=$(echo ${repo_path} | cut -d'>' -f2)
-	  repo_path=$(echo ${repo_path} | cut -d'>' -f1)
+          repo_path=$(echo ${repo} | cut -d':' -f1)
+          repo_target=$(echo ${repo_path} | cut -d'>' -f2)
+          repo_path=$(echo ${repo_path} | cut -d'>' -f1)
     else
-	  repo_path=$(echo ${repo} | cut -d':' -f1)
-	  repo_target=$repo_path
+          repo_path=$(echo ${repo} | cut -d':' -f1)
+          repo_target=$repo_path
     fi
 
 
@@ -125,7 +125,7 @@ done
 if [[ "$public_only" = "0" ]]; then
     # Cloning the private repositories
     for repo in ${PRIVATE_REPOS[@]}; do
-	pull "$repo" "${PRIVATE_REPO}"
+        pull "$repo" "${PRIVATE_REPO}"
     done
 fi
 
