@@ -112,7 +112,7 @@ pull() {
         git remote set-url origin ${repo_url}
         git fetch
         git checkout ${repo_branch}
-        git pull
+        git pull --rebase
         cd -
     fi
 }
