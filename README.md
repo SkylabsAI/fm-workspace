@@ -16,22 +16,26 @@ This will do the following:
 **Note:** you should be able to run the script again, as it is defensive.
 
 
-After installation, you can compile all the FM dependencies by running the
-following command:
+After installation, you can build Coq and cpp2v via the following command:
+
 ```sh
 make -C fmdeps/cpp2v ast-prepare
-dune build
+dune build @fmdeps/coq/install @cpp2v \
+  _build/default/fmdeps/coq/dev/shim/coqtop \
+  _build/default/fmdeps/coq/dev/shim/coqidetop.opt
+```
+
+You can compile all the FM dependencies by running the
+following command:
+```sh
+dune build @@default
 ```
 
 ## Editor Setup
 
 As Coq is built as part of the `dune` workspace, a bit of extra setup is
-required. First, to ensure that `coqtop` (used by PG) and `coqidetop.opt`
-(used by vscoq) are available, you need to run the following.
-```
-dune build _build/default/fmdeps/coq/dev/shim/coqtop
-dune build _build/default/fmdeps/coq/dev/shim/coqidetop.opt
-```
+required.
+
 
 ### PG
 
