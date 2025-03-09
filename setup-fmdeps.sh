@@ -138,7 +138,7 @@ fi
 # Check opam version.
 OPAM_VERSION=$(opam --version)
 if [[ "${MIN_OPAM_VERSION}" != \
-      "$(echo -e '${OPAM_VERSION}\n2.2.1' | sort -V | head -n1)" ]]; then
+      "$(echo -e "${OPAM_VERSION}\n${MIN_OPAM_VERSION}" | sort -V | head -n1)" ]]; then
   echo "Your version of opam (${OPAM_VERSION}) is too old."
   echo "Version ${MIN_OPAM_VERSION} at least is required."
   echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
