@@ -162,7 +162,10 @@ else
   # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
-  opam install ${FMDEPS_DIR}/br-fm-deps.opam
+  opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+  # We skip this step, and assume fm-ci's opam file is up-to-date.
+  # dune build ${opam_file}
+  opam install ${opam_file}
 fi
 
 # Check SWI-Prolog version.
