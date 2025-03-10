@@ -9,15 +9,21 @@
 set -euf -o pipefail
 
 public_only=0
+git_only=0
+execute_only=0
 do_help=0
 protocol="https://"
+yes=0
 
-while getopts "phs" opt
+while getopts "pgxhsy" opt
 do
   case $opt in
   (p) public_only=1 ;;
-  (h) do_help=1;;
-  (s) protocol="ssh://git@";;
+  (g) git_only=1 ;;
+  (x) execute_only=1 ;;
+  (h) do_help=1 ;;
+  (s) protocol="ssh://git@" ;;
+  (y) yes=1 ;;
   (*) printf "Illegal option '-%s'\n" "$opt" && exit 1 ;;
   esac
 done
@@ -27,15 +33,22 @@ if [ "$do_help" = "1" ]; then
     echo ""
     echo "Options"
     echo " -p     only install public dependencies"
+    echo " -g     only pull dependencies with git and do not execute the setup"
+    echo " -x     only execute the setup and do not pull dependencies with git (assumes that they have already been pulled/updated)"
     echo " -h     show this message"
     echo " -s     pull dependencies using ssh"
+    echo " -y     say [--yes] during relevant portions of the installation"
     exit
 fi
 
+if [[ "$git_only" = "1" && "$execute_only" = "1" ]]; then
+  echo "Passing [-g] (git only) and [-x] (execute only) simultaneously is a no-op."
+  exit 1
+fi
 
 # Git base URL.
 PRIVATE_REPO="github.com/bluerock-io"
-PUBLIC_REPO="github.com/bluerock-io"
+PUBLIC_REPO="github.com/SkylabsAI"
 
 # Directory where to clone the FM dependencies.
 FMDEPS_DIR="${PWD}/fmdeps"
@@ -67,7 +80,7 @@ PUBLIC_REPOS=(
   "elpi:br-master"
   "coq-elpi:br-master"
   "vscoq:br-main"
-  "fm-ci:main"
+  "fm-ci:skylabs-main"
   "coq-lsp:br-main"
 )
 
@@ -119,16 +132,22 @@ pull() {
     fi
 }
 
-# Cloning the configured repositories.
-for repo in ${PUBLIC_REPOS[@]}; do
-    pull "$repo" "${PUBLIC_REPO}"
-done
+if [[ "$execute_only" = "0" ]]; then
+  # Cloning the configured repositories.
+  for repo in ${PUBLIC_REPOS[@]}; do
+      pull "$repo" "${PUBLIC_REPO}"
+  done
 
-if [[ "$public_only" = "0" ]]; then
-    # Cloning the private repositories
-    for repo in ${PRIVATE_REPOS[@]}; do
+  if [[ "$public_only" = "0" ]]; then
+      # Cloning the private repositories
+      for repo in ${PRIVATE_REPOS[@]}; do
         pull "$repo" "${PRIVATE_REPO}"
-    done
+      done
+  fi
+fi
+
+if [[ "$git_only" = "1" ]]; then
+  exit 0
 fi
 
 # Checking that opam is installed.
@@ -167,7 +186,11 @@ else
   opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
   # We skip this step, and assume fm-ci's opam file is up-to-date.
   # dune build ${opam_file}
-  opam install ${opam_file}
+  if [[ "$yes" = "1" ]]; then
+    opam install --yes ${opam_file}
+  else
+    opam install ${opam_file}
+  fi
 fi
 
 # Check SWI-Prolog version.
