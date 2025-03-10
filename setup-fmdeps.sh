@@ -44,7 +44,7 @@ FMDEPS_DIR="${PWD}/fmdeps"
 MIN_OPAM_VERSION="2.2.1"
 
 # Version of the FM dependencies.
-FMDEPS_VERSION="2024-11-01"
+FMDEPS_VERSION="2025-02-26"
 
 # Configured opam repositories. Convention: "<NAME>!<URL>".
 OPAM_REPOS=(
