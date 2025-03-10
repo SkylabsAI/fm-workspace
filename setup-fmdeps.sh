@@ -44,7 +44,7 @@ FMDEPS_DIR="${PWD}/fmdeps"
 MIN_OPAM_VERSION="2.2.1"
 
 # Version of the FM dependencies.
-FMDEPS_VERSION="2024-11-01"
+FMDEPS_VERSION="2025-02-26"
 
 # Configured opam repositories. Convention: "<NAME>!<URL>".
 OPAM_REPOS=(
@@ -87,12 +87,12 @@ pull() {
     local repo="$1"
     local REPO_BASE="$2"
     if [[ $repo == *">"* ]]; then
-	  repo_path=$(echo ${repo} | cut -d':' -f1)
-	  repo_target=$(echo ${repo_path} | cut -d'>' -f2)
-	  repo_path=$(echo ${repo_path} | cut -d'>' -f1)
+          repo_path=$(echo ${repo} | cut -d':' -f1)
+          repo_target=$(echo ${repo_path} | cut -d'>' -f2)
+          repo_path=$(echo ${repo_path} | cut -d'>' -f1)
     else
-	  repo_path=$(echo ${repo} | cut -d':' -f1)
-	  repo_target=$repo_path
+          repo_path=$(echo ${repo} | cut -d':' -f1)
+          repo_target=$repo_path
     fi
 
 
@@ -112,7 +112,7 @@ pull() {
         git remote set-url origin ${repo_url}
         git fetch
         git checkout ${repo_branch}
-        git pull
+        git pull --rebase
         cd -
     fi
 }
@@ -125,7 +125,7 @@ done
 if [[ "$public_only" = "0" ]]; then
     # Cloning the private repositories
     for repo in ${PRIVATE_REPOS[@]}; do
-	pull "$repo" "${PRIVATE_REPO}"
+        pull "$repo" "${PRIVATE_REPO}"
     done
 fi
 
@@ -138,7 +138,7 @@ fi
 # Check opam version.
 OPAM_VERSION=$(opam --version)
 if [[ "${MIN_OPAM_VERSION}" != \
-      "$(echo -e '${OPAM_VERSION}\n2.2.1' | sort -V | head -n1)" ]]; then
+      "$(echo -e "${OPAM_VERSION}\n${MIN_OPAM_VERSION}" | sort -V | head -n1)" ]]; then
   echo "Your version of opam (${OPAM_VERSION}) is too old."
   echo "Version ${MIN_OPAM_VERSION} at least is required."
   echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
@@ -162,7 +162,10 @@ else
   # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
-  opam install ${FMDEPS_DIR}/br-fm-deps.opam
+  opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+  # We skip this step, and assume fm-ci's opam file is up-to-date.
+  # dune build ${opam_file}
+  opam install ${opam_file}
 fi
 
 # Check SWI-Prolog version.
