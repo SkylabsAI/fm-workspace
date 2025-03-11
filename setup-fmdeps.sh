@@ -60,6 +60,7 @@ PUBLIC_REPOS=(
   "BRiCk>cpp2v-core:master"
   "coq:br-master"
   "stdpp:br-master"
+  "rocq-stdlib>stdlib:br-master"
   "iris:br-master"
   "coq-ext-lib:br-master"
   "coq-equations:br-main"
@@ -73,6 +74,7 @@ PUBLIC_REPOS=(
 # Repositories that are internal
 PRIVATE_REPOS=(
   "auto>cpp2v:master"
+  "fm-docs:main"
 )
 
 # Creating the directory where repos will be cloned.
