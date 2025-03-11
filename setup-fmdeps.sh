@@ -69,12 +69,12 @@ PUBLIC_REPOS=(
   "vscoq:br-main"
   "fm-ci:main"
   "coq-lsp:br-main"
-  "fm-docs:main"
 )
 
 # Repositories that are internal
 PRIVATE_REPOS=(
   "auto>cpp2v:master"
+  "fm-docs:main"
 )
 
 # Creating the directory where repos will be cloned.
