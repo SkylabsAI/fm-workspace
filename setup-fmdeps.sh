@@ -48,12 +48,11 @@ FMDEPS_VERSION="2025-02-26"
 
 # Configured opam repositories. Convention: "<NAME>!<URL>".
 OPAM_REPOS=(
-  "coq-released!https://coq.inria.fr/opam/released"
   "iris-dev!git+https://gitlab.mpi-sws.org/iris/opam.git"
 )
 
 # Selected opam repositories at switch creation.
-OPAM_SELECTED_REPOS="iris-dev,default,coq-released"
+OPAM_SELECTED_REPOS="iris-dev,default"
 
 # Repositories to clone. Convention: "<REPO_PATH>[><PATH>]:<MAIN_BRANCH>".
 PUBLIC_REPOS=(
@@ -236,9 +235,14 @@ fi
 
 # Remind to configure opam.
 
+echo "<<< Caveats >>>"
 if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
   echo
-  echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run:\033[0m"
+  echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run the following in each shell:\033[0m"
   echo -e \
     "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\" --set-switch)\033[0m"
+else
+  echo -e "\033[0;36mYou need to run the following in each shell:\033[0m"
+  echo -e \
+    "  \033[0;1meval \$(opam env)\033[0m"
 fi
