@@ -235,9 +235,14 @@ fi
 
 # Remind to configure opam.
 
+echo "<<< Caveats >>>"
 if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
   echo
-  echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run:\033[0m"
+  echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run the following in each shell:\033[0m"
   echo -e \
     "  \033[0;1meval \$(opam env --switch=\"${OPAM_SWITCH_NAME}\" --set-switch)\033[0m"
+else
+  echo -e "\033[0;36mYou need to run the following in each shell:\033[0m"
+  echo -e \
+    "  \033[0;1meval \$(opam env)\033[0m"
 fi
