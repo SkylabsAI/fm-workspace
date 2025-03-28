@@ -7,7 +7,9 @@ To prepare an FM workspace, run the following command, and follow instructions i
 ```
 This will do the following:
 - Create an `fmdeps` folder and clone all the BlueRock FM deps into it.
-- Create an `opam` switch named `br-${FMDEPS_VERSION}` -- here and below, `${FMDEPS_VERSION}` will
+- Create an `opam` switch named `br-${FMDEPS_VERSION}` -- here and below,
+  `${FMDEPS_VERSION}` will be the current release number (currently
+  `2025-02-26`).
 - Install all the external dependencies (`ocaml`, `dune`, ...) in the switch.
 - Check that SWI-Prolog is installed, and that the version is supported.
 - Check that Clang is installed, and that the version is supported.
