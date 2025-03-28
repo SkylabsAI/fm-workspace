@@ -1,13 +1,13 @@
 BlueRock FM Workspace Setup
 ===========================
 
-To prepare an FM workspace, run the following command.
+To prepare an FM workspace, run the following command, and follow instructions in its output.
 ```sh
 ./setup-fmdeps.sh
 ```
 This will do the following:
 - Create an `fmdeps` folder and clone all the BlueRock FM deps into it.
-- Create an `opam` switch named `br-${FMDEPS_VERSION}`.
+- Create an `opam` switch named `br-${FMDEPS_VERSION}` -- here and below, `${FMDEPS_VERSION}` will
 - Install all the external dependencies (`ocaml`, `dune`, ...) in the switch.
 - Check that SWI-Prolog is installed, and that the version is supported.
 - Check that Clang is installed, and that the version is supported.
@@ -15,8 +15,20 @@ This will do the following:
 
 **Note:** you should be able to run the script again, as it is defensive.
 
+## Opam environment setup
 
-After installation, you can build Coq and cpp2v via the following command:
+You will **have to** configure your shell to use the tools from the new `opam` switch!
+This configuration is local to a running shell process, so **it must be repeated for each shell**.
+`setup-fmdeps.sh` will list the correct instructions, typically something like `eval $(opam env)`
+or `eval $(opam env --switch="br-${FMDEPS_VERSION}" --set-switch)`; read the script output for the actual command line!
+
+You can configure `opam` to make this automatic, by adding a hook into your
+shell; you will need to run `opam switch br-${FMDEPS_VERSION}` to make our new
+switch the default, and follow instructions at `opam init --reinit`.
+
+## Building fmdeps
+
+After installation and configuring your environment, you can build Coq and cpp2v via the following command:
 
 ```sh
 make -C fmdeps/cpp2v ast-prepare
