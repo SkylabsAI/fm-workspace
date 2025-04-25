@@ -208,9 +208,9 @@ else
 fi
 
 # Check LLVM version.
-CLANG_MIN_MAJOR_VER="16"
-CLANG_MAX_MAJOR_VER="18"
-CLANG_RECOMMENDED_VER="18"
+CLANG_MIN_MAJOR_VER="18"
+CLANG_MAX_MAJOR_VER="20"
+CLANG_RECOMMENDED_VER="19"
 
 if ! type clang 2> /dev/null > /dev/null; then
   echo "Could not find clang."
