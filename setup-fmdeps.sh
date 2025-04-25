@@ -146,8 +146,10 @@ if [[ "${MIN_OPAM_VERSION}" != \
 fi
 
 OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
+opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
-  echo "The opam switch ${OPAM_SWITCH_NAME} already exists."
+  echo -e "\033[0;36mThe opam switch ${OPAM_SWITCH_NAME} already exists, we assume dependencies have been installed. In case of trouble, try rerunning:\033[0m"
+  echo -e "\topam install ${opam_file}"
 else
   # Adding the opam repositories (this is idempotent).
   for opam_repo in ${OPAM_REPOS[@]}; do
@@ -163,10 +165,12 @@ else
   # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
   eval $(opam env --switch="${OPAM_SWITCH_NAME}")
   opam update
-  opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
   # We skip this step, and assume fm-ci's opam file is up-to-date.
   # dune build ${opam_file}
-  opam install ${opam_file}
+  if ! opam install ${opam_file}; then
+    echo -e "\033[0;36mInstalling opam dependencies failed! Your opam switch is now in an inconsistent state!\033[0m"
+    echo -e "Please troubleshoot `opam install ${opam_file}` until it succeeds, or ask for assistance."
+  fi
 fi
 
 # Check SWI-Prolog version.
@@ -208,9 +212,9 @@ else
 fi
 
 # Check LLVM version.
-CLANG_MIN_MAJOR_VER="16"
-CLANG_MAX_MAJOR_VER="18"
-CLANG_RECOMMENDED_VER="18"
+CLANG_MIN_MAJOR_VER="18"
+CLANG_MAX_MAJOR_VER="20"
+CLANG_RECOMMENDED_VER="19"
 
 if ! type clang 2> /dev/null > /dev/null; then
   echo "Could not find clang."
