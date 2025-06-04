@@ -162,8 +162,10 @@ else
   echo "Creating opam switch ${OPAM_SWITCH_NAME}."
   opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
     "${OPAM_SWITCH_NAME}"
+  # Clear any user-chosen OPAMSWITCH, so that we use the new switch instead
+  unset OPAMSWITCH
   # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
-  eval $(opam env --switch="${OPAM_SWITCH_NAME}")
+  eval $(opam env)
   opam update
   # We skip this step, and assume fm-ci's opam file is up-to-date.
   # dune build ${opam_file}
