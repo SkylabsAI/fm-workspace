@@ -147,6 +147,7 @@ fi
 
 OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
 opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+old_switch="$(opam switch show)"
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
   echo -e "\033[0;36mThe opam switch ${OPAM_SWITCH_NAME} already exists, we assume dependencies have been installed. In case of trouble, try rerunning:\033[0m"
   echo -e "\topam install ${opam_file}"
@@ -162,10 +163,7 @@ else
   echo "Creating opam switch ${OPAM_SWITCH_NAME}."
   opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
     "${OPAM_SWITCH_NAME}"
-  # Clear any user-chosen OPAMSWITCH, so that we use the new switch instead
-  unset OPAMSWITCH
-  # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
-  eval $(opam env)
+  eval $(opam env --switch="${OPAM_SWITCH_NAME}" --set-switch)
   opam update
   # We skip this step, and assume fm-ci's opam file is up-to-date.
   # dune build ${opam_file}
@@ -175,12 +173,14 @@ else
   fi
 fi
 
+errors=0
+
 # Check SWI-Prolog version.
 
 if ! pkg-config --modversion swipl > /dev/null; then
   echo "It seems that SWI-Prolog is not installed on your system."
   echo "Command [pkg-config --modversion swipl] failed."
-  exit 1
+  errors=1
 fi
 
 function version_to_int() {
@@ -208,7 +208,7 @@ PL_MAX_VER=$(version_to_int ${MAX_VER})
 if [[ $PL_CUR_VER -lt $PL_MIN_VER || $PL_CUR_VER -gt $PL_MAX_VER ]]; then
   echo -e "\033[0;31mError: SWI-prolog version ${CUR_VER} is not supported."
   echo -e "You need a version between ${MIN_VER} and ${MAX_VER}.\033[0m"
-  exit 1
+  errors=1
 else
   echo "Using SWI-Prolog version ${CUR_VER}."
 fi
@@ -218,31 +218,31 @@ CLANG_MIN_MAJOR_VER="18"
 CLANG_MAX_MAJOR_VER="20"
 CLANG_RECOMMENDED_VER="19"
 
-if ! type clang 2> /dev/null > /dev/null; then
+if type clang 2> /dev/null > /dev/null; then
+  CLANG_VER="$(clang --version | \
+                 grep "clang version" | \
+                 sed -r 's/^.*clang version ([0-9.]+).*$/\1/' | \
+                 cut -d' ' -f3)"
+  CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f1)"
+
+  if seq ${CLANG_MIN_MAJOR_VER} ${CLANG_MAX_MAJOR_VER} | grep -q "${CLANG_MAJOR_VER}"; then
+    echo "Using clang version ${CLANG_VER}."
+  else
+    echo -e "\033[0;31mError: clang version ${CLANG_VER} is not supported."
+    echo -e "The major version is expected to be between ${CLANG_MIN_MAJOR_VER} and \
+      ${CLANG_MAX_MAJOR_VER}.\033[0m"
+    errors=1
+  fi
+else
   echo "Could not find clang."
   echo "See https://apt.llvm.org/. We recommend version ${CLANG_RECOMMENDED_VER}."
-  exit 1
-fi
-
-CLANG_VER="$(clang --version | \
-               grep "clang version" | \
-               sed -r 's/^.*clang version ([0-9.]+).*$/\1/' | \
-               cut -d' ' -f3)"
-CLANG_MAJOR_VER="$(echo ${CLANG_VER} | cut -d'.' -f1)"
-
-if seq ${CLANG_MIN_MAJOR_VER} ${CLANG_MAX_MAJOR_VER} | grep -q "${CLANG_MAJOR_VER}"; then
-  echo "Using clang version ${CLANG_VER}."
-else
-  echo -e "\033[0;31mError: clang version ${CLANG_VER} is not supported."
-  echo -e "The major version is expected to be between ${CLANG_MIN_MAJOR_VER} and \
-    ${CLANG_MAX_MAJOR_VER}.\033[0m"
-  exit 1
+  errors=1
 fi
 
 # Remind to configure opam.
 
 echo "<<< Caveats >>>"
-if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
+if [[ ! ${old_switch} = ${OPAM_SWITCH_NAME} ]]; then
   echo
   echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run the following in each shell:\033[0m"
   echo -e \
@@ -252,3 +252,5 @@ else
   echo -e \
     "  \033[0;1meval \$(opam env)\033[0m"
 fi
+
+exit $errors
