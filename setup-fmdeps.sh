@@ -167,10 +167,9 @@ else
   # This will be ${OPAM_SWITCH_NAME} unless the user set ${OPAMSWITCH}
   old_switch="$(opam switch show)"
 
-  # Clear any user-chosen OPAMSWITCH, so that we use the new switch instead in this script
-  unset OPAMSWITCH
-  # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
-  eval $(opam env)
+  # Switch locally to newly created switch, and overwrite OPAMSWITCH
+  eval $(opam env --switch="${OPAM_SWITCH_NAME}" --set-switch)
+
   opam update
   # We skip this step, and assume fm-ci's opam file is up-to-date.
   # dune build ${opam_file}
