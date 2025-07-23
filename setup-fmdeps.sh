@@ -147,6 +147,7 @@ fi
 
 OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
 opam_file=${FMDEPS_DIR}/fm-ci/fm-deps/br-fm-deps.opam
+old_switch="$(opam switch show)"
 if opam switch list --short | grep "^${OPAM_SWITCH_NAME}$" > /dev/null; then
   echo -e "\033[0;36mThe opam switch ${OPAM_SWITCH_NAME} already exists, we assume dependencies have been installed. In case of trouble, try rerunning:\033[0m"
   echo -e "\topam install ${opam_file}"
@@ -163,6 +164,9 @@ else
   # This makes the new switch the global default
   opam switch create --empty --repositories="${OPAM_SELECTED_REPOS}" \
     "${OPAM_SWITCH_NAME}"
+  # This will be ${OPAM_SWITCH_NAME} unless the user set ${OPAMSWITCH}
+  old_switch="$(opam switch show)"
+
   # Clear any user-chosen OPAMSWITCH, so that we use the new switch instead in this script
   unset OPAMSWITCH
   # Avoid --set-switch here, it would hide misconfigurations from the $(opam switch show) test
@@ -228,7 +232,7 @@ fi
 # Remind to configure opam.
 
 echo "<<< Caveats >>>"
-if [[ ! `opam switch show` = ${OPAM_SWITCH_NAME} ]]; then
+if [[ ! ${old_switch} = ${OPAM_SWITCH_NAME} ]]; then
   echo
   echo -e "\033[0;36mCurrent switch is not ${OPAM_SWITCH_NAME}, you need to run the following in each shell:\033[0m"
   echo -e \
