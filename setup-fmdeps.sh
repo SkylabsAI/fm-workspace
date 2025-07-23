@@ -199,23 +199,6 @@ function version_to_int() {
   echo "${res}"
 }
 
-CUR_VER=$(pkg-config --modversion swipl)
-PL_CUR_VER=$(version_to_int ${CUR_VER})
-
-MIN_VER="9.0.0"
-MAX_VER="9.3.8"
-
-PL_MIN_VER=$(version_to_int ${MIN_VER})
-PL_MAX_VER=$(version_to_int ${MAX_VER})
-
-if [[ $PL_CUR_VER -lt $PL_MIN_VER || $PL_CUR_VER -gt $PL_MAX_VER ]]; then
-  echo -e "\033[0;31mError: SWI-prolog version ${CUR_VER} is not supported."
-  echo -e "You need a version between ${MIN_VER} and ${MAX_VER}.\033[0m"
-  errors=1
-else
-  echo "Using SWI-Prolog version ${CUR_VER}."
-fi
-
 # Check LLVM version.
 CLANG_MIN_MAJOR_VER="18"
 CLANG_MAX_MAJOR_VER="20"
