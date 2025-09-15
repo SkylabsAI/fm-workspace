@@ -49,10 +49,11 @@ FMDEPS_VERSION="2025-02-26"
 # Configured opam repositories. Convention: "<NAME>!<URL>".
 OPAM_REPOS=(
   "iris-dev!git+https://gitlab.mpi-sws.org/iris/opam.git"
+  "archive!git+https://github.com/ocaml/opam-repository-archive"
 )
 
 # Selected opam repositories at switch creation.
-OPAM_SELECTED_REPOS="iris-dev,default"
+OPAM_SELECTED_REPOS="iris-dev,archive,default"
 
 # Repositories to clone. Convention: "<REPO_PATH>[><PATH>]:<MAIN_BRANCH>".
 PUBLIC_REPOS=(
