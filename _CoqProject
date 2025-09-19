@@ -1,6 +1,8 @@
-# Warns about entries in this _CoqProject
+# AUTO-GENERATED CONTENT, EDIT `gen-_CoqProject-dune.sh` INSTEAD
+
+# Avoid warnings about entries in this _CoqProject
 -arg -w -arg -cannot-open-path
-# Warnings from `dune`
+# Warning settings from `dune` project files
 -arg -w -arg -notation-overridden
 -arg -w -arg -custom-entry-overridden
 -arg -w -arg -redundant-canonical-projection
@@ -51,8 +53,6 @@
 -Q fmdeps/coq-ext-lib/theories/ ExtLib
 -Q _build/default/fmdeps/coq-ext-lib/examples/ ExtLibExamples
 -Q fmdeps/coq-ext-lib/examples/ ExtLibExamples
--Q _build/default/fmdeps/aac-tactics/theories/ AAC_tactics
--Q fmdeps/aac-tactics/theories/ AAC_tactics
 -Q _build/default/fmdeps/iris/iris/ iris
 -Q fmdeps/iris/iris/ iris
 -Q _build/default/fmdeps/iris/iris_heap_lang/ iris.heap_lang
@@ -104,12 +104,6 @@
 -Q fmdeps/coq-elpi/apps/coercion/tests/ elpi.apps.coercion.tests
 -Q _build/default/fmdeps/coq-elpi/apps/coercion/theories/ elpi.apps.coercion
 -Q fmdeps/coq-elpi/apps/coercion/theories/ elpi.apps.coercion
--Q _build/default/fmdeps/fm-tools/scaffold/examples/test-havoc/proof/ test.havoc.proof
--Q fmdeps/fm-tools/scaffold/examples/test-havoc/proof/ test.havoc.proof
--Q _build/default/fmdeps/fm-tools/scaffold/examples/test-havoc/inc/ test.havoc.inc
--Q fmdeps/fm-tools/scaffold/examples/test-havoc/inc/ test.havoc.inc
--Q _build/default/fmdeps/fm-tools/scaffold/examples/test-havoc/src/ test.havoc.src
--Q fmdeps/fm-tools/scaffold/examples/test-havoc/src/ test.havoc.src
 -Q _build/default/fmdeps/coq-equations/theories/Prop/ Equations.Prop
 -Q fmdeps/coq-equations/theories/Prop/ Equations.Prop
 -Q _build/default/fmdeps/coq-equations/theories/ Equations
@@ -128,8 +122,6 @@
 -Q fmdeps/cpp2v/rocq-bluerock-cpp-stdlib/theories/ bluerock.cpp.stdlib
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-lts-adequacy/theories/ bluerock.lts_adequacy_demo
 -Q fmdeps/cpp2v/coq-bluerock-lts-adequacy/theories/ bluerock.lts_adequacy_demo
--Q _build/default/fmdeps/cpp2v/rocq-bluerock-cpp-demo/proof/ bluerock.cpp.demo
--Q fmdeps/cpp2v/rocq-bluerock-cpp-demo/proof/ bluerock.cpp.demo
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-core/tests/ bluerock_auto_core.tests
 -Q fmdeps/cpp2v/coq-bluerock-auto-core/tests/ bluerock_auto_core.tests
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-core/theories/ bluerock.auto.core
@@ -144,6 +136,20 @@
 -Q fmdeps/cpp2v/coq-bluerock-hw-models/theories/gic/ bluerock.hw_models.gic
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/default_specs.t/ bluerock_auto.cram.default_specs
 -Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/default_specs.t/ bluerock_auto.cram.default_specs
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/database_rep.t/ bluerock_auto.cram.database_rep
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/database_rep.t/ bluerock_auto.cram.database_rep
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/arith_bug.t/ bluerock_auto.cram.arith_bug
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/arith_bug.t/ bluerock_auto.cram.arith_bug
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/lazy_unfold.t/ bluerock_auto.cram.lazy_unfold
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/lazy_unfold.t/ bluerock_auto.cram.lazy_unfold
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/cpp_spec.t/ bluerock_auto.cram.cpp_spec
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/cpp_spec.t/ bluerock_auto.cram.cpp_spec
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/skylab_hammer.t/ bluerock_auto.cram.skylab_hammer
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/skylab_hammer.t/ bluerock_auto.cram.skylab_hammer
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/cppkey.t/ bluerock_auto.cram.cppkey
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/cppkey.t/ bluerock_auto.cram.cppkey
+-Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/backtraces.t/ bluerock_auto.cram.backtraces
+-Q fmdeps/cpp2v/coq-bluerock-auto-cpp/cram/backtraces.t/ bluerock_auto.cram.backtraces
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/tests/ bluerock_auto.tests
 -Q fmdeps/cpp2v/coq-bluerock-auto-cpp/tests/ bluerock_auto.tests
 -Q _build/default/fmdeps/cpp2v/coq-bluerock-auto-cpp/theories/ bluerock
@@ -170,5 +176,7 @@
 -Q fmdeps/coq/theories/ Corelib
 -Q _build/default/fmdeps/coq/user-contrib/Ltac2/ Ltac2
 -Q fmdeps/coq/user-contrib/Ltac2/ Ltac2
+-Q _build/default/fmdeps/brick-libcpp/rocq-brick-libstdcpp/proof/ bluerock.brick.libstdcpp
+-Q fmdeps/brick-libcpp/rocq-brick-libstdcpp/proof/ bluerock.brick.libstdcpp
 -Q fmdeps/cpp2v-core/rocq-bluerock-brick/tests/ bedrocktest
 -Q _build/default/fmdeps/cpp2v-core/rocq-bluerock-brick/tests/ bedrocktest
