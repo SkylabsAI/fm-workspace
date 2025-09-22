@@ -131,6 +131,9 @@ if [[ "$public_only" = "0" ]]; then
     done
 fi
 
+echo "Updating _CoqProject file"
+./fmdeps/cpp2v-core/scripts/coq_project_gen/gen-_CoqProject-dune.sh > _CoqProject
+
 # Checking that opam is installed.
 if ! type opam 2> /dev/null > /dev/null; then
   echo "Could not find opam, see https://opam.ocaml.org/doc/Install.html."
