@@ -147,6 +147,7 @@ if [[ "${MIN_OPAM_VERSION}" != \
   echo "Your version of opam (${OPAM_VERSION}) is too old."
   echo "Version ${MIN_OPAM_VERSION} at least is required."
   echo "See https://opam.ocaml.org/doc/Install.html for upgrade instructions."
+  exit 1
 fi
 
 OPAM_SWITCH_NAME="br-${FMDEPS_VERSION}"
