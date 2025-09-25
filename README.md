@@ -34,7 +34,7 @@ After installation and configuring your environment, you can build Coq and cpp2v
 
 ```sh
 make -C fmdeps/cpp2v ast-prepare
-dune build @fmdeps/coq/install @cpp2v \
+dune build @fmdeps/install @cpp2v \
   _build/default/fmdeps/coq/dev/shim/coqtop \
   _build/default/fmdeps/coq/dev/shim/coqidetop.opt
 ```
