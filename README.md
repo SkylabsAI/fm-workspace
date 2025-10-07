@@ -33,7 +33,6 @@ switch the default, and follow instructions at `opam init --reinit`.
 After installation and configuring your environment, you can build Coq and cpp2v via the following command:
 
 ```sh
-make -C fmdeps/cpp2v ast-prepare
 dune build @fmdeps/install @cpp2v \
   _build/default/fmdeps/coq/dev/shim/coqtop \
   _build/default/fmdeps/coq/dev/shim/coqidetop.opt
